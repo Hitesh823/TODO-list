@@ -6,24 +6,19 @@ var app=express();
 app.set("view engine","ejs");
 app.use(express.static('public'));
 app.use(express.urlencoded({extended:true}));
-var items=[]
 
-var example="working";
-app.get("/",function(req,res){
-    res.render("list",{ejes:items});
+const mongoose=require("mongoose");
+mongoose.connect("mongodb://localhost:27017/todo");
+const trySchema=new mongoose.Schema({
+    name:String
 });
-
-app.post("/",function(req,res){
-    var item=req.body.ele1;
-    items.push(item);
-    res.redirect("/");
+const item=mongoose.model("task",trySchema);
+const todo=new item({
+    name:"Create some videos"
 });
+todo.save();
 
 
 
 
 
-
-app.listen(5000,function(){
-    console.log("server started");
-});
